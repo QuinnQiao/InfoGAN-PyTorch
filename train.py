@@ -62,13 +62,13 @@ elif(params['dataset'] == 'FashionMNIST'):
     params['num_con_c'] = 2
 
 # Plot the training images.
-sample_batch = next(iter(dataloader))
-plt.figure(figsize=(10, 10))
-plt.axis("off")
-plt.imshow(np.transpose(vutils.make_grid(
-    sample_batch[0].to(device)[ : 100], nrow=10, padding=2, normalize=True).cpu(), (1, 2, 0)))
-plt.savefig('Training Images {}'.format(params['dataset']))
-plt.close('all')
+# sample_batch = next(iter(dataloader))
+# plt.figure(figsize=(10, 10))
+# plt.axis("off")
+# plt.imshow(np.transpose(vutils.make_grid(
+#     sample_batch[0].to(device)[ : 100], nrow=10, padding=2, normalize=True).cpu(), (1, 2, 0)))
+# plt.savefig('Training Images {}'.format(params['dataset']))
+# plt.close('all')
 
 # Initialise the network.
 netG = Generator().to(device)
@@ -208,19 +208,21 @@ for epoch in range(params['num_epochs']):
     epoch_time = time.time() - epoch_start_time
     print("Time taken for Epoch %d: %.2fs" %(epoch + 1, epoch_time))
     # Generate image after each epoch to check performance of the generator. Used for creating animated gif later.
-    with torch.no_grad():
-        gen_data = netG(fixed_noise).detach().cpu()
-    img_list.append(vutils.make_grid(gen_data, nrow=10, padding=2, normalize=True))
+    # with torch.no_grad():
+    #     gen_data = netG(fixed_noise).detach().cpu()
+    # img_list.append(vutils.make_grid(gen_data, nrow=10, padding=2, normalize=True))
 
     # Generate image to check performance of generator.
     if((epoch+1) == 1 or (epoch+1) == params['num_epochs']/2):
         with torch.no_grad():
             gen_data = netG(fixed_noise).detach().cpu()
-        plt.figure(figsize=(10, 10))
-        plt.axis("off")
-        plt.imshow(np.transpose(vutils.make_grid(gen_data, nrow=10, padding=2, normalize=True), (1,2,0)))
-        plt.savefig("Epoch_%d {}".format(params['dataset']) %(epoch+1))
-        plt.close('all')
+        # plt.figure(figsize=(10, 10))
+        # plt.axis("off")
+        # plt.imshow(np.transpose(vutils.make_grid(gen_data, nrow=10, padding=2, normalize=True), (1,2,0)))
+        # plt.savefig("Epoch_%d {}".format(params['dataset']) %(epoch+1))
+        # plt.close('all')
+        vutils.save_image(vutils.make_grid(gen_data, nrow=10, padding=2, normalize=True), 
+                            "sample/Epoch_%d {}".format(params['dataset']) %(epoch+1))
 
     # Save network weights.
     if (epoch+1) % params['save_epoch'] == 0:
@@ -242,10 +244,12 @@ print("-"*50)
 # Generate image to check performance of trained generator.
 with torch.no_grad():
     gen_data = netG(fixed_noise).detach().cpu()
-plt.figure(figsize=(10, 10))
-plt.axis("off")
-plt.imshow(np.transpose(vutils.make_grid(gen_data, nrow=10, padding=2, normalize=True), (1,2,0)))
-plt.savefig("Epoch_%d_{}".format(params['dataset']) %(params['num_epochs']))
+# plt.figure(figsize=(10, 10))
+# plt.axis("off")
+# plt.imshow(np.transpose(vutils.make_grid(gen_data, nrow=10, padding=2, normalize=True), (1,2,0)))
+# plt.savefig("Epoch_%d_{}".format(params['dataset']) %(params['num_epochs']))
+vutils.save_image(vutils.make_grid(gen_data, nrow=10, padding=2, normalize=True),
+                    "sample/Epoch_%d_{}".format(params['dataset']) %(params['num_epochs']))
 
 # Save network weights.
 torch.save({
@@ -260,19 +264,23 @@ torch.save({
 
 
 # Plot the training losses.
-plt.figure(figsize=(10,5))
-plt.title("Generator and Discriminator Loss During Training")
-plt.plot(G_losses,label="G")
-plt.plot(D_losses,label="D")
-plt.xlabel("iterations")
-plt.ylabel("Loss")
-plt.legend()
-plt.savefig("Loss Curve {}".format(params['dataset']))
+# plt.figure(figsize=(10,5))
+# plt.title("Generator and Discriminator Loss During Training")
+# plt.plot(G_losses,label="G")
+# plt.plot(D_losses,label="D")
+# plt.xlabel("iterations")
+# plt.ylabel("Loss")
+# plt.legend()
+# plt.savefig("Loss Curve {}".format(params['dataset']))
+G_losses = np.asarray(G_losses)
+np.savetxt('checkpoint/g_loss.txt', G_losses)
+D_losses = np.asarray(D_losses)
+np.savetxt('checkpoint/d_loss.txt', D_losses)
 
 # Animation showing the improvements of the generator.
-fig = plt.figure(figsize=(10,10))
-plt.axis("off")
-ims = [[plt.imshow(np.transpose(i,(1,2,0)), animated=True)] for i in img_list]
-anim = animation.ArtistAnimation(fig, ims, interval=1000, repeat_delay=1000, blit=True)
-anim.save('infoGAN_{}.gif'.format(params['dataset']), dpi=80, writer='imagemagick')
-plt.show()
+# fig = plt.figure(figsize=(10,10))
+# plt.axis("off")
+# ims = [[plt.imshow(np.transpose(i,(1,2,0)), animated=True)] for i in img_list]
+# anim = animation.ArtistAnimation(fig, ims, interval=1000, repeat_delay=1000, blit=True)
+# anim.save('infoGAN_{}.gif'.format(params['dataset']), dpi=80, writer='imagemagick')
+# plt.show()
