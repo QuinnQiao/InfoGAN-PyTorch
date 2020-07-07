@@ -3,8 +3,8 @@ import torch.nn as nn
 import torch.optim as optim
 import torchvision.utils as vutils
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
+# import matplotlib.pyplot as plt
+# import matplotlib.animation as animation
 import time
 import random
 
@@ -222,7 +222,7 @@ for epoch in range(params['num_epochs']):
         # plt.savefig("Epoch_%d {}".format(params['dataset']) %(epoch+1))
         # plt.close('all')
         vutils.save_image(vutils.make_grid(gen_data, nrow=10, padding=2, normalize=True), 
-                            "sample/Epoch_%d {}".format(params['dataset']) %(epoch+1))
+                            "sample/Epoch_%d_{}.jpg".format(params['dataset']) %(epoch+1))
 
     # Save network weights.
     if (epoch+1) % params['save_epoch'] == 0:
@@ -249,7 +249,7 @@ with torch.no_grad():
 # plt.imshow(np.transpose(vutils.make_grid(gen_data, nrow=10, padding=2, normalize=True), (1,2,0)))
 # plt.savefig("Epoch_%d_{}".format(params['dataset']) %(params['num_epochs']))
 vutils.save_image(vutils.make_grid(gen_data, nrow=10, padding=2, normalize=True),
-                    "sample/Epoch_%d_{}".format(params['dataset']) %(params['num_epochs']))
+                    "sample/Epoch_%d_{}.jpg".format(params['dataset']) %(params['num_epochs']))
 
 # Save network weights.
 torch.save({

@@ -3,10 +3,10 @@ import argparse
 import torch
 import torchvision.utils as vutils
 import numpy as np
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-load_path', required=True, help='Checkpoint to load path from')
+parser.add_argument('--load_path', required=True, help='Checkpoint to load path from')
 args = parser.parse_args()
 
 from models.mnist_model import Generator
@@ -53,16 +53,29 @@ noise2 = torch.cat((z, c1, c3), dim=1)
 with torch.no_grad():
     generated_img1 = netG(noise1).detach().cpu()
 # Display the generated image.
-fig = plt.figure(figsize=(10, 10))
-plt.axis("off")
-plt.imshow(np.transpose(vutils.make_grid(generated_img1, nrow=10, padding=2, normalize=True), (1,2,0)))
-plt.show()
+# fig = plt.figure(figsize=(10, 10))
+# plt.axis("off")
+# plt.imshow(np.transpose(vutils.make_grid(generated_img1, nrow=10, padding=2, normalize=True), (1,2,0)))
+# plt.show()
+vutils.save_image(vutils.make_grid(generated_img1, nrow=10, padding=2, normalize=True),
+        'sample/c1_c2.jpg')
 
 # Generate image.
 with torch.no_grad():
     generated_img2 = netG(noise2).detach().cpu()
 # Display the generated image.
-fig = plt.figure(figsize=(10, 10))
-plt.axis("off")
-plt.imshow(np.transpose(vutils.make_grid(generated_img2, nrow=10, padding=2, normalize=True), (1,2,0)))
-plt.show()
+# fig = plt.figure(figsize=(10, 10))
+# plt.axis("off")
+# plt.imshow(np.transpose(vutils.make_grid(generated_img2, nrow=10, padding=2, normalize=True), (1,2,0)))
+# plt.show()
+vutils.save_image(vutils.make_grid(generated_img2, nrow=10, padding=2, normalize=True),
+        'sample/c1_c3.jpg')
+
+
+# To see variation along z (horizontally) and c1 (Vertically)
+z = torch.randn(10, 62, 1, 1, device=device).repeat(10, 1, 1, 1)
+noise3 = torch.cat((z, c1, zeros, zeros), dim=1)
+with torch.no_grad():
+    generated_img3 = netG(noise2).detach().cpu()
+vutils.save_image(vutils.make_grid(generated_img3, nrow=10, padding=2, normalize=True),
+        'sample/c1_z.jpg')
