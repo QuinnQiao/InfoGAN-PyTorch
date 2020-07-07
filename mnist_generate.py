@@ -76,6 +76,6 @@ vutils.save_image(vutils.make_grid(generated_img2, nrow=10, padding=2, normalize
 z = torch.randn(10, 62, 1, 1, device=device).repeat(10, 1, 1, 1)
 noise3 = torch.cat((z, c1, zeros, zeros), dim=1)
 with torch.no_grad():
-    generated_img3 = netG(noise2).detach().cpu()
+    generated_img3 = netG(noise3).detach().cpu()
 vutils.save_image(vutils.make_grid(generated_img3, nrow=10, padding=2, normalize=True),
         'sample/c1_z.jpg')
