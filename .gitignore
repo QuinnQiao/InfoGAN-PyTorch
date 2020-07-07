@@ -1,3 +1,5 @@
 log*
-sample/
-checkpoint/
+sample*/
+checkpoint*/
+data/
+*/**/__pycache__
