@@ -53,7 +53,7 @@ dis_c[torch.arange(0, 100), idx] = 1.0
 # Discrete latent code.
 c1 = dis_c.view(100, -1, 1, 1)
 
-z = torch.randn(100, num_z, 1, 1, device=device)
+z = torch.randn(1, num_z, 1, 1, device=device).repeat(100, 1, 1 ,1)
 
 # # To see variation along c2 (Horizontally) and c1 (Vertically)
 # noise1 = torch.cat((z, c1, c2), dim=1)
@@ -66,7 +66,7 @@ for i in range(num_con_c):
 	with torch.no_grad():
 	    generated_img = netG(noise).detach().cpu()
 	vutils.save_image(vutils.make_grid(generated_img, nrow=10, padding=2, normalize=True),
-	        'sample/c0_c%d.jpg' % i)
+	        'sample_ada/c0_c%d.jpg' % i)
 
 
 # To see variation along z (horizontally) and c1 (Vertically)
@@ -78,4 +78,4 @@ noise = torch.cat(tmp, dim=1)
 with torch.no_grad():
     generated_img = netG(noise).detach().cpu()
 vutils.save_image(vutils.make_grid(generated_img, nrow=10, padding=2, normalize=True),
-        'sample/c0_z.jpg')
+        'sample_ada/c0_z.jpg')
