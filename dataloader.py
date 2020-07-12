@@ -2,7 +2,10 @@ import torch
 import torchvision.transforms as transforms
 import torchvision.datasets as dsets
 
-class dSprites(Dataset):
+import numpy as np 
+from PIL import Image
+
+class dSprites(torch.utils.data.Dataset):
     '''
     load from npz files
 

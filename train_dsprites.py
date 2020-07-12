@@ -50,7 +50,7 @@ netD = DHead().to(device)
 netD.apply(weights_init)
 print(netD)
 
-netQ = QHead(params['num_con_c']).to(device)
+netQ = QHead().to(device)
 netQ.apply(weights_init)
 print(netQ)
 
@@ -69,7 +69,7 @@ optimG = optim.Adam([{'params': netG.parameters()}, {'params': netQ.parameters()
 z = torch.randn(30, params['num_z'], 1, 1, device=device)
 fixed_noise = z
 if(params['num_dis_c'] != 0):
-    idx = np.arange(params['dis_c_dim']).repeat(3)
+    idx = np.arange(params['dis_c_dim']).repeat(10)
     dis_c = torch.zeros(30, params['num_dis_c'], params['dis_c_dim'], device=device)
     for i in range(params['num_dis_c']):
         dis_c[torch.arange(0, 30), i, idx] = 1.0
