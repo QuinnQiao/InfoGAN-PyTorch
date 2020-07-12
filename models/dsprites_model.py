@@ -11,13 +11,13 @@ class Generator(nn.Module):
     def __init__(self):
         super().__init__()
 
-        self.tconv1 = nn.ConvTranspose2d(12, 448, 2, 1, bias=False)
-        self.bn1 = nn.BatchNorm2d(448)
+        self.tconv1 = nn.ConvTranspose2d(12, 128, 2, 1, bias=False)
+        self.bn1 = nn.BatchNorm2d(128)
 
-        self.tconv2 = nn.ConvTranspose2d(448, 256, 4, 2, padding=1, bias=False)
-        self.bn2 = nn.BatchNorm2d(256)
+        self.tconv2 = nn.ConvTranspose2d(128, 128, 4, 2, padding=1, bias=False)
+        self.bn2 = nn.BatchNorm2d(128)
 
-        self.tconv3 = nn.ConvTranspose2d(256, 128, 4, 2, padding=1, bias=False)
+        self.tconv3 = nn.ConvTranspose2d(128, 128, 4, 2, padding=1, bias=False)
         self.bn3 = nn.BatchNorm2d(128)
 
         self.tconv4 = nn.ConvTranspose2d(128, 64, 4, 2, padding=1, bias=False)
@@ -33,7 +33,7 @@ class Generator(nn.Module):
         x = F.relu(self.tconv4(x))
         x = F.relu(self.tconv5(x))
 
-        img = torch.tanh(self.tconv6(x))
+        img = torch.sigmoid(self.tconv6(x))
 
         return img
 
@@ -43,14 +43,14 @@ class Discriminator(nn.Module):
 
         self.conv1 = nn.Conv2d(1, 64, 4, 2, 1)
 
-        self.conv2 = nn.Conv2d(64, 128, 4, 2, 1, bias=False)
-        self.bn2 = nn.BatchNorm2d(128)
+        self.conv2 = nn.Conv2d(64, 64, 4, 2, 1, bias=False)
+        self.bn2 = nn.BatchNorm2d(64)
 
-        self.conv3 = nn.Conv2d(128, 256, 4, 2, 1, bias=False)
-        self.bn3 = nn.BatchNorm2d(256)
+        self.conv3 = nn.Conv2d(64, 128, 4, 2, 1, bias=False)
+        self.bn3 = nn.BatchNorm2d(128)
 
-        self.conv4 = nn.Conv2d(256, 448, 4, 2, 1, bias=False)
-        self.bn4 = nn.BatchNorm2d(448)
+        self.conv4 = nn.Conv2d(128, 128, 4, 2, 1, bias=False)
+        self.bn4 = nn.BatchNorm2d(128)
 
     def forward(self, x):
         x = F.leaky_relu(self.conv1(x), 0.1, inplace=True)
@@ -64,7 +64,7 @@ class DHead(nn.Module):
     def __init__(self):
         super().__init__()
 
-        self.conv = nn.Conv2d(448, 1, 4)
+        self.conv = nn.Conv2d(128, 1, 4)
 
     def forward(self, x):
         output = torch.sigmoid(self.conv(x))
@@ -75,7 +75,7 @@ class QHead(nn.Module):
     def __init__(self):
         super().__init__()
 
-        self.conv1 = nn.Conv2d(448, 128, 4, bias=False)
+        self.conv1 = nn.Conv2d(128, 128, 4, bias=False)
         self.bn1 = nn.BatchNorm2d(128)
 
         self.conv_disc = nn.Conv2d(128, 3, 1)
