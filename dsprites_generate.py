@@ -36,7 +36,7 @@ zeros = torch.zeros(30, 1, 1, 1, device=device)
 # c2 = torch.cat((c, zeros), dim=1)
 # c3 = torch.cat((zeros, c), dim=1)
 num_con_c = 4
-num_z = 5
+num_z = 64
 cs = []
 for i in range(num_con_c):
 	tmp = []

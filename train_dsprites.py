@@ -30,7 +30,7 @@ dataloader = get_data(params['dataset'], params['batch_size'])
 # dis_c_dim : dimension of discrete latent code.
 # num_con_c : number of continuous latent code used.
 if(params['dataset'] == 'dSprites'):
-    params['num_z'] = 5
+    params['num_z'] = 64
     params['num_dis_c'] = 1
     params['dis_c_dim'] = 3
     params['num_con_c'] = 4

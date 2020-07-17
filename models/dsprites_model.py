@@ -11,7 +11,7 @@ class Generator(nn.Module):
     def __init__(self):
         super().__init__()
 
-        self.tconv1 = nn.ConvTranspose2d(12, 128, 2, 1, bias=False)
+        self.tconv1 = nn.ConvTranspose2d(71, 128, 2, 1, bias=False)
         self.bn1 = nn.BatchNorm2d(128)
 
         self.tconv2 = nn.ConvTranspose2d(128, 128, 4, 2, padding=1, bias=False)
